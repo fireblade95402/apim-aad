@@ -57,9 +57,9 @@ The generate a Bearer token for calling the API's you need to following the belo
 
 ### Post to URL
 
-    https://login.microsoftonline.com/\<SubscriptionId\>/oauth2/v2.0/token
+    https://login.microsoftonline.com/<tenantId>/oauth2/v2.0/token
 
-Replace the SubscriptionId with a subscription from the tenant that 
+Replace the TenantId with a tenant where the application registration were created 
 
 ### Body (form-data) 
 | Key  | Value  | Note|
