@@ -1,59 +1,52 @@
+#Parameters
 subscriptionId="1511222a-d245-49b3-8da9-65a7539360de"
 appName="My Contoso Retail"
-appIdentification="https://mycontoso.com/retail"
-
-
-#--identifier-uris $appIdentification
+applicationIdentifier="https://contoso.com/retail"
 
 #Create Service API App Registration
-
 name="$appName (API)"
-
 serviceclientid=$(az ad app list --display-name "$name" --query [].appId --output tsv)
 if [[ $serviceclientid ]];
 then
     az ad app delete --id $serviceclientid
 fi
-serviceclientid=$(az ad app create --display-name "$name"  --query appId --output tsv)
-#serviceobjectid=$(az ad app show --id $serviceclientid --query objectId --output tsv)
 
-#Add roles to service 
-az ad app update --id $serviceclientid --app-roles @manifest.json
+serviceclientid=$(az ad app create --display-name "$name" --sign-in-audience AzureADMyOrg  --app-roles @manifest.json --query appId --output tsv)
+az ad app update  --id $serviceclientid --identifier-uris "api://$serviceclientid" 
+
+az ad app permission add --id $serviceclientid --api 00000003-0000-0000-c000-000000000000 --api-permissions e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope
+sleep 20
+az ad app permission admin-consent --id $serviceclientid
 
 
-
-#Client -SALES
+#Client -SALES App Registration
 name="$appName (Sales)"
-#Create Service API App Registration
 clientid=$(az ad app list --display-name "$name" --query [].appId --output tsv)
 if [[ $clientid ]];
 then
     az ad app delete --id $clientid
 fi
-clientid=$(az ad app create --display-name "$name"  --query appId --output tsv)
-objectid=$(az ad app show --id $clientid --query objectId --output tsv)
+clientid=$(az ad app create --display-name "$name"  --sign-in-audience AzureADMyOrg --query appId --output tsv)
 
 for role in $(az ad app list --app-id $serviceclientid --query "[].appRoles[].{name:displayName, appid:id} | [? contains(name, 'sales')].{id:appid}" -o tsv); do
     az ad app permission add --id $clientid --api $serviceclientid --api-permissions $role=Role
 done
+sleep 20
+az ad app permission admin-consent --id $clientid
 
 
-#Client -RETURNS
+#Client -RETURNS App Regitration
 name="$appName (Returns)"
-
-#Create Service API App Registration
 clientid=$(az ad app list --display-name "$name" --query [].appId --output tsv)
 if [[ $clientid ]];
 then
     az ad app delete --id $clientid
 fi
-clientid=$(az ad app create --display-name "$name"  --query appId --output tsv)
-objectid=$(az ad app show --id $clientid --query objectId --output tsv)
+clientid=$(az ad app create --display-name "$name"  --sign-in-audience AzureADMyOrg --query appId --output tsv)
 
 for role in $(az ad app list --app-id $serviceclientid --query "[].appRoles[].{name:displayName, appid:id} | [? contains(name, 'returns')].{id:appid}" -o tsv); do
     az ad app permission add --id $clientid --api $serviceclientid --api-permissions $role=Role
 done
-
-
-
+sleep 20
+az ad app permission admin-consent --id $clientid
 
