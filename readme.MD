@@ -55,11 +55,7 @@ Key to enter
 
 The generate a Bearer token for calling the API's you need to following the below:
 
-###  Request Type     
-
-POST
-
-### URL
+### Post to URL
 
     https://login.microsoftonline.com/\<SubscriptionId\>/oauth2/v2.0/token
 
