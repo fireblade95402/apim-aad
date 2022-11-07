@@ -1,19 +1,21 @@
 subscriptionId="1511222a-d245-49b3-8da9-65a7539360de"
-appName="My-Contoso-Retail-API"
+appName="My Contoso Retail"
 appIdentification="https://mycontoso.com/retail"
 
-echo $appName
 
 #--identifier-uris $appIdentification
 
 #Create Service API App Registration
-serviceclientid=$(az ad app list --display-name $appName --query [].appId --output tsv)
+
+name="$appName (API)"
+
+serviceclientid=$(az ad app list --display-name "$name" --query [].appId --output tsv)
 if [[ $serviceclientid ]];
 then
     az ad app delete --id $serviceclientid
 fi
-serviceclientid=$(az ad app create --display-name $appName  --query appId --output tsv)
-service objectid=$(az ad app show --id $serviceclientid --query objectId --output tsv)
+serviceclientid=$(az ad app create --display-name "$name"  --query appId --output tsv)
+#serviceobjectid=$(az ad app show --id $serviceclientid --query objectId --output tsv)
 
 #Add roles to service 
 az ad app update --id $serviceclientid --app-roles @manifest.json
@@ -21,15 +23,14 @@ az ad app update --id $serviceclientid --app-roles @manifest.json
 
 
 #Client -SALES
-clientappName="My-Contoso-Client-SALES"
-
+name="$appName (Sales)"
 #Create Service API App Registration
-clientid=$(az ad app list --display-name $clientappName --query [].appId --output tsv)
+clientid=$(az ad app list --display-name "$name" --query [].appId --output tsv)
 if [[ $clientid ]];
 then
     az ad app delete --id $clientid
 fi
-clientid=$(az ad app create --display-name $clientappName  --query appId --output tsv)
+clientid=$(az ad app create --display-name "$name"  --query appId --output tsv)
 objectid=$(az ad app show --id $clientid --query objectId --output tsv)
 
 for role in $(az ad app list --app-id $serviceclientid --query "[].appRoles[].{name:displayName, appid:id} | [? contains(name, 'sales')].{id:appid}" -o tsv); do
@@ -38,15 +39,15 @@ done
 
 
 #Client -RETURNS
-clientappName="My-Contoso-Client-RETURNS"
+name="$appName (Returns)"
 
 #Create Service API App Registration
-clientid=$(az ad app list --display-name $clientappName --query [].appId --output tsv)
+clientid=$(az ad app list --display-name "$name" --query [].appId --output tsv)
 if [[ $clientid ]];
 then
     az ad app delete --id $clientid
 fi
-clientid=$(az ad app create --display-name $clientappName  --query appId --output tsv)
+clientid=$(az ad app create --display-name "$name"  --query appId --output tsv)
 objectid=$(az ad app show --id $clientid --query objectId --output tsv)
 
 for role in $(az ad app list --app-id $serviceclientid --query "[].appRoles[].{name:displayName, appid:id} | [? contains(name, 'returns')].{id:appid}" -o tsv); do
