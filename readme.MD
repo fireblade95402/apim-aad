@@ -16,6 +16,7 @@ There's a script that can be run to setup the application registrations in ADD
 - Azure Tenant with Global Admin access
 - Azure Subscription with owner access
 - VS Code / Git
+- Instance of API Management for use
 
 
 ## Setup AAD Application Registrations

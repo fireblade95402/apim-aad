@@ -10,10 +10,13 @@ then
 fi
 
 serviceclientid=$(az ad app create --display-name "$name" --sign-in-audience AzureADMyOrg  --app-roles @manifest.json --query appId --output tsv)
+
+#Set Audience 
 az ad app update  --id $serviceclientid --identifier-uris "api://$serviceclientid" 
 
+#Added User.Read permissions for the clients to be able to be granted access
 az ad app permission add --id $serviceclientid --api 00000003-0000-0000-c000-000000000000 --api-permissions e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope
-sleep 20
+sleep 20 #There's a delay on the above permission
 az ad app permission admin-consent --id $serviceclientid
 
 
@@ -29,7 +32,7 @@ clientid=$(az ad app create --display-name "$name"  --sign-in-audience AzureADMy
 for role in $(az ad app list --app-id $serviceclientid --query "[].appRoles[].{name:displayName, appid:id} | [? contains(name, 'sales')].{id:appid}" -o tsv); do
     az ad app permission add --id $clientid --api $serviceclientid --api-permissions $role=Role
 done
-sleep 20
+sleep 20 #There's a delay on the above permission
 az ad app permission admin-consent --id $clientid
 
 
@@ -45,6 +48,6 @@ clientid=$(az ad app create --display-name "$name"  --sign-in-audience AzureADMy
 for role in $(az ad app list --app-id $serviceclientid --query "[].appRoles[].{name:displayName, appid:id} | [? contains(name, 'returns')].{id:appid}" -o tsv); do
     az ad app permission add --id $clientid --api $serviceclientid --api-permissions $role=Role
 done
-sleep 20
+sleep 20 #There's a delay on the above permission
 az ad app permission admin-consent --id $clientid
 
