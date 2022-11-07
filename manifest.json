@@ -1,0 +1,38 @@
+[
+    {
+    "allowedMemberTypes": [
+      "Application"
+    ],
+    "description": "Sales API read access",
+    "displayName": "sales.read",
+    "isEnabled": "true",
+    "value": "sales.read"
+},
+{
+    "allowedMemberTypes": [
+      "Application"
+    ],
+    "description": "Sales API write access",
+    "displayName": "sales.write",
+    "isEnabled": "true",
+    "value": "sales.write"
+},
+{
+    "allowedMemberTypes": [
+      "Application"
+    ],
+    "description": "Returns API read access",
+    "displayName": "returns.read",
+    "isEnabled": "true",
+    "value": "returns.read"
+},
+{
+    "allowedMemberTypes": [
+      "Application"
+    ],
+    "description": "Returns API write access",
+    "displayName": "returns.write",
+    "isEnabled": "true",
+    "value": "returns.write"
+}
+]
