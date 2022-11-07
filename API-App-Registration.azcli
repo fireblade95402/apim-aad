@@ -1,6 +1,5 @@
 #Parameters
 appName="My Contoso Retail"
-applicationIdentifier="https://contoso.com/retail"
 
 #Create Service API App Registration
 name="$appName (API)"
