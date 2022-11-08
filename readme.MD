@@ -64,6 +64,7 @@ You'll need the following:
 - Tenant ID where the applciation registrations were create
 - Application ID URI (Audience) e.g. api://\<clientid\>
 - Role/s for that API to accept.
+- Unauthorized error message can be customized: (failed-validation-error-message)
 
 
 ``` 
@@ -86,7 +87,7 @@ To be able to call the API. A client secret is required. To generate the secret 
 
 Remember to copy it and save it in a safe place. As you can't see it again once you leave the screen.
 
-Below shows where this is:
+Below shows where it can be created:
 
 ![Client Secret](./images/client%20secret.png)
 
