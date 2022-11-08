@@ -4,12 +4,11 @@ This is an example on how to setup AAD for authentication and authorization of A
 
 It's using Roles to drive the authorization of the API call's to allow more granular control of an API estate.
 
-It will be creating 3x AAD Application Registrations to cover:
+It will be creating 3x AAD Application Registrations:
 - 1x API  Application
-- 2x Client Applications
+- 2x Client Applications 
 
 Once created to protect the API's in API Management using the API Application and Roles.
-
 
 There's a script that can be run to setup the application registrations in ADD 
 
@@ -22,13 +21,11 @@ There's a script that can be run to setup the application registrations in ADD
 - Instance of API Management for use
 
 
-
-
 ## STEP 1 - Setup AAD Application Registrations
 
 ### Run the following script: ``` ./API-App-Registration.azcli ```
 
-This creates 3x Application Registrations for securing the API's with AAD  
+This creates 3x Application Registrations for securing the API's with AAD. Multiple client applications can be created that are linking to the API application.    
 
 Below shows some of the key areas that have been configured in the application registrations created by the script:
 
@@ -45,6 +42,17 @@ This is where the roles are created that will be aligned to the API's. In this c
 
 These get used when seting up the policy later in API Management
 ![Expose an API - Roles](./images/api-roles.png)
+
+### Client Application/s Registration - My Contoso Retail (Sales or Returns)
+
+This is the identity that will be calling the API's. It will have permissions linked the the roles that it will have access to from the API application above. 
+
+So for a client that has access to the sales API's it will have permissions to the sales roles (e.g. sales.read and/or sales.write)
+
+This can be seen below:
+
+![Client Roles](./images/client.png)
+
 
 
 ## STEP 2 - Add API Application policy update
